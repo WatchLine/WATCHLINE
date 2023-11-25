@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Comunidade</title>
+    <style>
+        /* Estilos CSS para a página */
+        /* Adicione seus estilos personalizados aqui */
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            background-color: #f1f1f1;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        nav ul li a:hover {
+            color: blue;
+        }
+
+        .post {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+
+        .action-buttons button {
+            margin-right: 10px;
+        }
+
+        .comments {
+            margin-top: 10px;
+        }
+
+        .comment-input {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Minha Comunidade</h1>
+        <ul>
+            <li><a href="#inicio">INÍCIO</a></li>
+            <li><a href="#membros">MEMBROS</a></li>
+            <li><a href="#post">POSTS</a></li>
+        </ul>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#inicio">Início</a></li>
+            <li><a href="#membros">Membros</a></li>
+            <li><a href="#post">Posts</a></li>
+        </ul>
+    </nav>
+    <center>
+        <section id="conteudo">
+            <div id="inicio">
+                <h2>Seja bem-vindo à nossa comunidade</h2>
+                <p>Este é o início da nossa comunidade. Aqui você encontrará informações importantes.</p>
+            </div>
+            <div id="membros">
+                <h2>Membros</h2>
+                <p>Aqui você encontrará informações sobre os membros da nossa comunidade.</p>
+                <ul id="lista-membros">
+                    <!-- Aqui serão exibidos os membros logados -->
+                </ul>
+            </div>
+            <div id="post" style="display: none;">
+                <h2>Posts</h2>
+                <p>Aqui você encontrará os posts mais recentes da nossa comunidade.</p>
+                <form id="post-form">
+                    <p><textarea id="post-text" placeholder="Escreva seu post..."></textarea></p>
+                    <p><input type="file" id="post-image" accept="image/*" capture="camera"></p>
+                    <p><input type="file" id="post-video" accept="video/*"></p>
+                    <p><button type="button" id="post-button">Postar</button></p>
+                </form>
+                <div id="post-list">
+                    <!-- Posts serão adicionados dinamicamente aqui -->
+                </div>
+            </div>
+        </section>
+    </center>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function exibirSecao(secao) {
+                document.getElementById('inicio').style.display = 'none';
+                document.getElementById('membros').style.display = 'none';
+                document.getElementById('post').style.display = 'none';
+                document.getElementById(secao).style.display = 'block';
+            }
+
+            var links = document.querySelectorAll('nav a');
+            links.forEach(function (link) {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    var targetId = this.getAttribute('href').substring(1);
+                    exibirSecao(targetId);
+                });
+            });
+
+            document.getElementById('post-button').addEventListener('click', function () {
+                adicionarPost();
+            });
+
+            function adicionarPost() {
+                var postText = document.getElementById('post-text').value;
+                var postImage = document.getElementById('post-image').files[0];
+                var postVideo = document.getElementById('post-video').files[0];
+
+                if (!postText && !postImage && !postVideo) {
+                    alert('Preencha pelo menos um campo para adicionar um post.');
+                    return;
+                }
+
+                var newPost = {
+                    text: postText,
+                    image: postImage ? URL.createObjectURL(postImage) : null,
+                    video: postVideo ? URL.createObjectURL(postVideo) : null,
+                    likes: 0,
+                    isLiked: false,
+                    comments: [],
+                    timestamp: new Date().toISOString()
+                };
+
+                adicionarPostNaLista(newPost);
+                salvarPostagens();
+                limparCampos();
+                alert('Post adicionado com sucesso!');
+            }
+
+            function adicionarPostNaLista(post) {
+                var postList = document.getElementById('post-list');
+                var postDiv = criarElementoPost(post);
+                adicionarBotoesAcoes(postDiv, post);
+                postList.appendChild(postDiv);
+            }
+
+            function criarElementoPost(post) {
+                var postDiv = document.createElement('div');
+                postDiv.className = 'post';
+                var postText = document.createElement('p');
+                postText.textContent = post.text;
+                postDiv.appendChild(postText);
+                if (post.image) {
+                    var postImage = document.createElement('img');
+                    postImage.src = post.image;
+                    postDiv.appendChild(postImage);
+                }
+                if (post.video) {
+                    var postVideo = document.createElement('video');
+                    postVideo.src = post.video;
+                    postVideo.controls = true;
+                    postDiv.appendChild(postVideo);
+                }
+
+                // Adiciona a seção de comentários e campo de inserção de comentário
+                var commentSection = document.createElement('div');
+                commentSection.className = 'comments';
+                var commentInput = document.createElement('input');
+                commentInput.className = 'comment-input';
+                commentInput.placeholder = 'Escreva seu comentário...';
+                commentInput.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        var comentario = commentInput.value;
+                        if (comentario) {
+                            post.comments.push(comentario);
+                            updateComments(commentSection, post.comments);
+                            commentInput.value = '';
+                        }
+                    }
+                });
+                commentSection.appendChild(commentInput);
+                postDiv.appendChild(commentSection);
+
+                return postDiv;
+            }
+
+            function adicionarBotoesAcoes(postDiv, post) {
+                var actionButtons = document.createElement('div');
+                actionButtons.className = 'action-buttons';
+
+                var likeButton = document.createElement('button');
+                likeButton.textContent = 'Curtir';
+                likeButton.addEventListener('click', function () {
+                    if (!post.isLiked) {
+                        post.likes++;
+                        post.isLiked = true;
+                    } else {
+                        post.likes--;
+                        post.isLiked = false;
+                    }
+                    updateLikes(likeButton, post.likes);
+                });
+
+                var repostButton = document.createElement('button');
+                repostButton.textContent = 'Repostar';
+                repostButton.addEventListener('click', function () {
+                    alert('Post repostado!');
+                });
+
+                var deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Excluir';
+                deleteButton.addEventListener('click', function () {
+                    postDiv.remove();
+                });
+
+                actionButtons.appendChild(likeButton);
+                actionButtons.appendChild(repostButton);
+                actionButtons.appendChild(deleteButton);
+
+                postDiv.appendChild(actionButtons);
+            }
+
+            function updateLikes(button, likes) {
+                button.textContent = likes > 0 ? 'Descurtir (' + likes + ')' : 'Curtir';
+            }
+
+            function updateComments(commentSection, comments) {
+                commentSection.innerHTML = '';
+                comments.forEach(function (comment) {
+                    var commentPara = document.createElement('p');
+                    commentPara.textContent = comment;
+                    commentSection.appendChild(commentPara);
+
+                    var replyInput = document.createElement('input');
+                    replyInput.className = 'comment-input';
+                    replyInput.placeholder = 'Responder ao comentário';
+                    commentSection.appendChild(replyInput);
+                });
+            }
+
+            function salvarPostagens() {
+                // Implemente a lógica para salvar os posts (localmente ou em um servidor)
+            }
+
+            function limparCampos() {
+                document.getElementById('post-text').value = '';
+                document.getElementById('post-image').value = '';
+                document.getElementById('post-video').value = '';
+            }
+        });
+    </script>
+</body>
+
+</html>

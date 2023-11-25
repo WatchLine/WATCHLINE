@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta tags, title, and styles -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Streaming</title>
+    <style>
+        /* Estilos básicos */
+        body {
+            background-color: #500268;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #d27be9;
+            color: #500268;
+            text-align: center;
+            padding: 10px;
+        }
+
+        nav ul {
+            background-color: #500268;
+            list-style: none;
+            padding: 0;
+            text-align: center;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        nav li {
+            margin-right: 0;
+        }
+
+        nav a {
+            color: #d27be9;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+
+        section {
+            padding: 20px;
+        }
+
+        .active {
+            font-weight: bold;
+            border-bottom: 2px solid #500268;
+        }
+
+        #post-form {
+            margin: 20px 0;
+        }
+
+        #post-text {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            white-space: pre-line;
+        }
+
+        #post-image,
+        #post-video {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            white-space: normal;
+        }
+
+        #post-button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #post-button:hover {
+            background-color: #0056b3;
+        }
+
+        .like-button,
+        .repost-button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .like-button:hover,
+        .repost-button:hover {
+            background-color: #0056b3;
+        }
+
+        .comment-button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+            display: none;
+        }
+
+        .comment-button:hover {
+            background-color: #0056b3;
+        }
+
+        #post-list {
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 10px;
+            background-color: #f8f8f8;
+        }
+
+        .post {
+            background-color: #fff;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .comments {
+            /* Estilos para a seção de comentários, se necessário */
+        }
+
+        .comment {
+            /* Estilos para um comentário, se necessário */
+        }
+
+        #startButton {
+            background-color: #EF3705;
+            color: white;
+            padding: 15px 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+      #stopButton {
+            background-color: #EF3705;
+            color: white;
+            padding: 15px 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+      #startScreenRecording {
+            background-color: #EF3705;
+            color: white;
+            padding: 15px 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+      #stopScreenRecording{
+            background-color: #EF3705;
+            color: white;
+            padding: 15px 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+       #downloadButton {
+            background-color: #EF3705;
+            color: white;
+            padding: 15px 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div id="title">
+            <h1>WATCHLINE LIVES</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="./watchlineinicio.html">INÍCIO</a></li>
+                <li><a href="./comunidade.html">COMUNIDADE</a></li>
+                <li><a href="./sobre.html">SOBRE</a></li>
+                <li><a href="./perfil.html">SUA CONTA</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div id="video-container">
+        <video id="liveVideo" autoplay playsinline muted></video>
+    </div>
+    <button id="startButton" onclick="startStreaming()">Iniciar Transmissão</button><br>
+    <button id="stopButton" onclick="stopStreaming()">Parar Transmissão</button><br>
+
+    <button id="startScreenRecording" onclick="startScreenRecording()">Iniciar Gravação de Tela</button><br>
+    <button id="stopScreenRecording" onclick="stopScreenRecording()">Parar Gravação de Tela</button><br>
+
+    <button id="downloadButton" onclick="downloadRecording()" disabled>Download Gravação</button>
+
+  <script>
+    const video = document.getElementById('liveVideo');
+    let mediaRecorder;
+    let recordedChunks = [];
+
+    async function startStreaming() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            video.srcObject = stream;
+
+            mediaRecorder = new MediaRecorder(stream);
+
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    recordedChunks.push(event.data);
+                }
+            };
+
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                recordedChunks = [];
+                video.srcObject = null;
+
+                document.getElementById('downloadButton').disabled = false;
+                mediaRecorder.blob = blob;
+            };
+
+            mediaRecorder.start();
+        } catch (error) {
+            console.error('Erro ao iniciar transmissão:', error);
+            alert('Erro ao acessar a câmera. Verifique as permissões e tente novamente. Detalhes do erro: ' + error.message);
+        }
+    }
+
+    function stopStreaming() {
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+        }
+    }
+
+    function downloadRecording() {
+        if (mediaRecorder && mediaRecorder.blob) {
+            const url = URL.createObjectURL(mediaRecorder.blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'recording.webm';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    }
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil</title>
+    <link href="./style/style.css" rel="stylesheet">
+    <link href="./style/media.css" rel="stylesheet">
+    <style>
+        /* Adicionei um estilo para ocultar a seção de edição por padrão */
+        .edit-section {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Conteúdo do corpo da página -->
+    <div id="title">
+        <h1>WATCHLINE</h1>
+    </div>
+
+    <!-- Barra de navegação -->
+    <ul>
+        <li><a href="./watchlineinicio.html">INÍCIO</a></li>
+        <li><a href="./lives.html">LIVE</a></li>
+        <li><a href="./comunidade.html">COMUNIDADE</a></li>
+        <li><a href="./sobre.html">SOBRE</a></li>
+        <li><a href="./perfil.html">SUA CONTA</a></li>
+    </ul>
+
+    <!-- Seção de perfil -->
+    <div class="profile">
+        <h2>Meu Perfil</h2>
+        <img src="" alt="Sua Foto de Perfil" id="profileImage">
+        <p><strong>Nome:</strong> <span id="name">Seu Nome</span></p>
+        <p><strong>Email:</strong> <span id="email">seu@email.com</span></p>
+        <p><strong>Senha:</strong> ********* </p>
+        <p><strong>Idade:</strong> <span id="age">0</span></p>
+        <p><strong>Localização:</strong> <span id="location">Sua Localização</span></p>
+        <p><strong>Biografia:</strong> <span id="bio">Sua Biografia</span></p>
+        <button id="editButton" class="edit-button">Editar Perfil</button>
+    </div>
+
+    <!-- Seção de edição -->
+    <div class="edit-section">
+        <h2>Editar Perfil</h2>
+        <form id="editForm">
+            <!-- Campos do formulário para edição -->
+            <label for="name">Nome:</label>
+            <input type="text" id="nameInput" name="name">
+            <br>
+            <label for="email">Email:</label>
+            <input type="email" id="emailInput" name="email">
+            <br>
+            <label for="age">Idade:</label>
+            <input type="number" id="ageInput" name="age">
+            <br>
+            <label for="location">Localização:</label>
+            <input type="text" id="locationInput" name="location">
+            <br>
+            <label for="bio">Biografia:</label>
+            <textarea id="bioInput" name="bio"></textarea>
+            <br>
+            <label for="profileImage">Foto de Perfil:</label>
+            <input type="file" id="profileImageInput" name="profileImage">
+          
+            <button type="submit" onclick="saveProfileData()">Salvar Alterações</button>
+            <br>
+            <a href="index.html">SAIR DA CONTA</a>
+            <br>
+            <a href="redefinirsenha.html">REDEFINIÇÃO DE SENHA</a>
+        </form>
+    </div>
+
+    <!-- Scripts JavaScript -->
+    <script defer>
+        // Função para carregar informações do perfil do armazenamento local
+        function loadProfileData() {
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const age = document.getElementById('age');
+            const location = document.getElementById('location');
+            const bio = document.getElementById('bio');
+            const profileImage = document.getElementById('profileImage');
+
+            // Verificar se há informações salvas
+            if (localStorage.getItem('profileData')) {
+                const profileData = JSON.parse(localStorage.getItem('profileData'));
+
+                name.textContent = profileData.name;
+                email.textContent = profileData.email;
+                age.textContent = profileData.age;
+                location.textContent = profileData.location;
+                bio.textContent = profileData.bio;
+
+                // Definir a imagem usando a string base64
+                profileImage.src = profileData.profileImage;
+            }
+        }
+
+        // Função para salvar informações do perfil no armazenamento local
+        function saveProfileData() {
+            // Capturar os valores do formulário de edição
+            const nameInput = document.getElementById('nameInput').value;
+            const emailInput = document.getElementById('emailInput').value;
+            const ageInput = document.getElementById('ageInput').value;
+            const locationInput = document.getElementById('locationInput').value;
+            const bioInput = document.getElementById('bioInput').value;
+            const profileImageInput = document.getElementById('profileImageInput');
+
+            // Converter a imagem para base64 antes de salvar
+            const profileImageBase64 = getBase64(profileImageInput.files[0]);
+
+            // Criar um objeto com os dados do perfil
+            const profileData = {
+                name: nameInput,
+                email: emailInput,
+                age: ageInput,
+                location: locationInput,
+                bio: bioInput,
+                profileImage: profileImageBase64,
+            };
+
+            // Salvar as informações no armazenamento local
+            localStorage.setItem('profileData', JSON.stringify(profileData));
+
+            // Carregar as informações atualizadas na seção de perfil
+            loadProfileData();
+
+            // Esconder a seção de edição após salvar
+            toggleEditSection();
+        }
+
+        // Função para inicializar o formulário de edição com os dados do perfil
+        function initializeEditForm() {
+            const nameInput = document.getElementById('nameInput');
+            const emailInput = document.getElementById('emailInput');
+            const ageInput = document.getElementById('ageInput');
+            const locationInput = document.getElementById('locationInput');
+            const bioInput = document.getElementById('bioInput');
+            const profileImageInput = document.getElementById('profileImageInput');
+
+            // Verificar se há informações salvas
+            if (localStorage.getItem('profileData')) {
+                const profileData = JSON.parse(localStorage.getItem('profileData'));
+
+                // Preencher os campos de edição com os dados do perfil
+                nameInput.value = profileData.name;
+                emailInput.value = profileData.email;
+                ageInput.value = profileData.age;
+                locationInput.value = profileData.location;
+                bioInput.value = profileData.bio;
+                // profileImageInput.value = profileData.profileImage; // Altere para a lógica adequada de obter a imagem
+            }
+        }
+
+        // Adicionar evento ao carregar a página para verificar se há informações salvas no servidor
+        window.onload = function () {
+            loadProfileData();
+
+            // Adicionar evento ao botão "Editar Perfil" para mostrar/ocultar a seção de edição
+            document.getElementById('editButton').addEventListener('click', function () {
+                // Inicializar o formulário de edição com os dados do perfil antes de exibi-lo
+                initializeEditForm();
+
+                // Alternar a exibição da seção de edição
+                toggleEditSection();
+            });
+        };
+
+        // Adicionar evento ao botão "SAIR DA CONTA" para limpar os dados do perfil ao sair
+        document.querySelector('a[href="index.html"]').addEventListener('click', function () {
+            clearProfileData();
+        });
+
+        // Função para limpar informações do perfil ao sair da conta
+        function clearProfileData() {
+            localStorage.removeItem('profileData');
+            loadProfileData(); // Limpar os dados na seção de perfil
+        }
+
+        // Função para converter um arquivo para base64
+        function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // Função para alternar a exibição da seção de edição
+        function toggleEditSection() {
+            const editSection = document.querySelector('.edit-section');
+            editSection.style.display = (editSection.style.display === 'none') ? 'block' : 'none';
+        }
+    </script>
+</body>
+
+</html>
+
