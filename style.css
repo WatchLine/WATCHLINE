@@ -1,0 +1,125 @@
+/* Estilos básicos */
+body {
+    background-color: #6702eb;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #ee2121;
+    color: #500268;
+    text-align: center;
+    padding: 10px;
+}
+
+nav ul {
+    background-color: #ee2121;
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+nav li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+section {
+    padding: 20px;
+}
+
+/* Estilos específicos da aba ativa */
+.active {
+    font-weight: bold;
+    border-bottom: 2px solid #500268;
+}
+
+/* Estilize o formulário de postagem */
+#post-form {
+    margin: 20px 0;
+}
+
+#post-text {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    white-space: pre-line;
+}
+
+#post-image,
+#post-video {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    white-space: normal;
+}
+
+#post-button {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+#post-button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para os botões de ação */
+.like-button, .repost-button {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.like-button:hover, .repost-button:hover {
+    background-color: #0056b3;
+}
+
+.comment-button {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+    display: none; /* Ocultar o botão de comentário por padrão */
+}
+
+.comment-button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para os posts */
+#post-list {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 10px;
+    background-color: #f8f8f8;
+}
+
+.post {
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comments {
+    /* Estilos para a seção de comentários, se necessário */
+}
+
+.comment {
+    /* Estilos para um comentário, se necessário */
+}
