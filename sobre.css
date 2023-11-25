@@ -1,0 +1,70 @@
+body{
+       background-color: #4e1f5b;  
+
+  color: #ef3705;
+       font-family: 'Bungee Shade', sans-serif;
+       max-width: 1200px;
+       margin: 0 auto;
+       padding: 15px;
+}
+header{
+       display: flex;
+       flex-direction: row;
+       justify-content: space-between;
+       align-items: center;
+}
+#title{
+       font-weight: 80;
+       font-family:'Bungee Shade', sans-serif;
+       flex-direction: column;
+       line-height: 10px;
+}
+li{
+       display: inline-block;
+       margin: 20px;
+}
+a{
+       color:#D57FEC;
+       
+}
+a:hover{
+       color: white;
+       transition: 0.3s all;
+}
+p{
+      align-items: baseline;
+      color:#f9e2ff; 
+      font-weight: bold;
+      line-height: 35px;
+      font-size: 25px;
+}
+
+/* Adicione estas regras para ajustar o tamanho das imagens */
+.imageamanda {
+    width: 300px; /* Ajuste o valor conforme necessário */
+    height: auto; /* Isso mantém a proporção original da imagem */
+    margin-right: 20px; /* Adiciona algum espaçamento entre as imagens, se necessário */
+}
+
+/* Adicione outras regras de estilo conforme necessário para o restante do seu layout */
+.imagelivis {
+    width: 330px; /* Ajuste o valor conforme necessário */
+    height: auto; /* Isso mantém a proporção original da imagem */
+    margin-right: 20px; /* Adiciona algum espaçamento entre as imagens, se necessário */
+}
+
+.imageju {
+    width: 350px; /* Ajuste o valor conforme necessário */
+    height: auto; /* Isso mantém a proporção original da imagem */
+    margin-right: 20px; /* Adiciona algum espaçamento entre as imagens, se necessário */
+}
+
+.imagegaby {
+    width: 450px; /* Ajuste o valor conforme necessário */
+    height: auto; /* Isso mantém a proporção original da imagem */
+    margin-right: 20px; /* Adiciona algum espaçamento entre as imagens, se necessário */
+}
+
+
+
+
