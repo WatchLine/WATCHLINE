@@ -1,0 +1,97 @@
+/* Estilos básicos */
+body {
+    background-color: #500268;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #f9e2ff;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #EF3705;
+    color: #500268;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Barra de navegação */
+nav ul {
+    background-color: #f9e2ff;
+    list-style: none;
+    padding: 0;
+    text-align: center;
+    color: #500268;
+  font size: 40 px;
+}
+
+nav li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav a {
+    color: #733a82;
+    text-decoration: none;
+}
+
+/* Seção principal */
+section {
+    padding: 20px;
+}
+
+/* Aba ativa */
+.active {
+    font-weight: bold;
+    border-bottom: 2px solid #500268;
+}
+
+/* Formulário de postagem */
+#post-form {
+    margin: 20px 0;
+  color: #500268;
+}
+
+#post-text, #post-image, #post-video {
+    width: 30%;
+    padding: 10px;
+    margin-bottom: 10px;
+  color: #500268;
+}
+
+#post-text {
+    white-space: pre-line;
+}
+
+/* Botões de ação */
+.like-button, .comment-button, .repost-button {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.like-button:hover, .comment-button:hover, .repost-button:hover {
+    background-color: #0056b3;
+}
+
+/* Lista de posts */
+#post-list {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 10px;
+    background-color: #f8f8f8;
+  color: #500268;
+}
+
+/* Post individual */
+.post {
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgb(255, 255, 255);
+  color: #500268;
+}
