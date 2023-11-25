@@ -1,0 +1,75 @@
+/* Estilos globais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #800080; /* Cor de fundo padrão */
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos para os botões */
+.edit-button {
+    background-color: #FFA500; /* Laranja */
+    color: #800080; /* Roxo */
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Estilos para a seção do perfil */
+.profile {
+    text-align: center;
+    background-color: #800080; /* Roxo */
+    color: #FFA500; /* Laranja */
+    padding: 20px;
+}
+
+.profile img {
+    max-width: 200px;
+    border-radius: 50%;
+    margin-top: 10px;
+}
+
+.profile p {
+    margin: 10px 0;
+}
+
+/* Estilos para a seção de edição */
+.edit-section {
+    display: none;
+    text-align: center;
+    background-color: #800080; /* Roxo */
+    color: #FFA500; /* Laranja */
+    padding: 20px;
+}
+
+.edit-section label {
+    display: block;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.edit-section input[type="text"],
+.edit-section input[type="email"],
+.edit-section input[type="number"],
+.edit-section input[type="password"],
+.edit-section textarea,
+.edit-section input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 2px solid #FFA500; /* Laranja */
+    border-radius: 5px;
+}
+
+.edit-section button {
+    background-color: #FFA500; /* Laranja */
+    color: #800080; /* Roxo */
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Adicione mais estilos conforme necessário */
+
